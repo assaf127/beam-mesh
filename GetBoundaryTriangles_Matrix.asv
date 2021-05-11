@@ -1,0 +1,16 @@
+function [faces_next_to_cells] = GetBoundaryTriangles_Matrix(faces_in_cells, F_adj)
+%GETBOUNDARYTRIANGLES_MATRIX Returns a matrix representing the boundary
+%triangles for each cell
+%   Returns a M.NF x (NumOfCells) matrix where each column represents the
+%   triangles that are in the boundary of a specific cell (inside and
+%   outside triangles). For each triangle, the distance calculation will
+%   only have to take into account the cells that are in his row.
+% Input:
+%   faces_in_cells  - M.NF x (NumOfCells) matrix representing the triangles
+%                     that are in eac
+faces_next_to_cells = F_adj * faces_in_cells;
+single_holes = and(xor(faces_next_to_cells == 3, faces_in_cells),faces_next_to_cells == 3);
+faces_next_to_cells = (faces_next_to_cells == 1) | (faces_next_to_cells == 2) ...
+    | single_holes;
+end
+
